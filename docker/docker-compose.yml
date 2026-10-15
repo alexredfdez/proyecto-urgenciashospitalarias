@@ -13,7 +13,7 @@ services:
       - shared-network
 
   mongo:
-    image: ${MONGO_IMAGE_VERSION:-mongo:6.0}
+    image: ${MONGO_IMAGE_VERSION:-mongo:4.4}
     container_name: ${MONGO_CONTAINER_NAME:-mongo}
     restart: unless-stopped
     ports:
