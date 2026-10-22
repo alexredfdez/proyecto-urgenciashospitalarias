@@ -25,5 +25,3 @@ def descargar_ficheros():
         print(f"Descargado: {ruta}")
 
 
-if __name__ == "__main__":
-    descargar_ficheros()
