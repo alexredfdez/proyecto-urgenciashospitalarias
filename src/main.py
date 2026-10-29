@@ -4,6 +4,7 @@ import descargar_archivos as df
 from pathlib import Path
 from etl_historico import ejecutar_etl
 import analytics_mongo as mongo
+from urgencias_worker import main as iniciarworker
 from anonimizador import anonimizar_documentos  # Importamos la capa de anonimización
 
 def ejecutar_etl_historico():
@@ -30,6 +31,10 @@ def ejecutar_etl_historico():
 
 def mostrarMenu():
     while True:
+        print("SISTEMA DE URGENCIAS HOSPITALARIAS")
+        print("-"*50)
+        print("1. Ejecutar ETL histórico")
+        print("2. Triaje")
         print("\nSISTEMA DE URGENCIAS HOSPITALARIAS")
         print("-" * 50)
         print("1. Ejecutar ETL histórico y cargar en MongoDB")
@@ -39,7 +44,14 @@ def mostrarMenu():
         if opcion == "1":
             try:
                 ejecutar_etl_historico()
+                ejecutar_etl_historico()
             except Exception as error:
+                print(f"Error durante la ejecución del ETL: {error}")
+        elif opcion=="2":
+            try:
+                iniciarworker()
+            except Exception as error:
+                print(f"Error durante la ejecución del worker: {error}")
                 print(f"❌ Error durante la ejecución del ETL: {error}")
         elif opcion == "0":
             print("Saliendo del sistema...")
