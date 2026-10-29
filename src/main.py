@@ -16,7 +16,7 @@ def ejecutar_etl_historico():
 def mostrarMenu():
     while True:
         print("SISTEMA DE URGENCIAS HOSPITALARIAS")
-        print("-")*50
+        print("-"*50)
         print("1. Ejecutar ETL histórico")
         print("0. Salir")
         opcion = input("Selecciona una opción: ").strip()
@@ -32,5 +32,5 @@ def mostrarMenu():
             print("Esta opción no es válida. Selecciona una")
 if __name__ == "__main__":
     mostrarMenu()
-    
+
     

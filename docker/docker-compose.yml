@@ -13,7 +13,7 @@ services:
       - shared-network
 
   mongo:
-    image: ${MONGO_IMAGE_VERSION:-mongo:4.4}
+    image: ${MONGO_IMAGE_VERSION:-mongo:7.0}
     container_name: ${MONGO_CONTAINER_NAME:-mongo}
     restart: unless-stopped
     ports:
@@ -27,7 +27,11 @@ services:
     networks:
       - ${DOCKER_NETWORK_NAME:-shared-network}
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      test:
+        [
+          "CMD-SHELL",
+          "mongosh --quiet --host localhost:27017 -u \"$${MONGO_INITDB_ROOT_USERNAME}\" -p \"$${MONGO_INITDB_ROOT_PASSWORD}\" --authenticationDatabase admin --eval 'db.adminCommand(\"ping\").ok' | grep -q 1",
+        ]
       interval: 5s
       timeout: 5s
       retries: 10
