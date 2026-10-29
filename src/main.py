@@ -2,6 +2,7 @@ import descargar_archivos as df
 from pathlib import Path
 from etl_historico import ejecutar_etl
 import analytics_mongo as mongo
+from urgencias_worker import main as iniciarworker
 def ejecutar_etl_historico():
     raiz = Path(__file__).resolve().parent.parent
     documentos = ejecutar_etl(
@@ -18,13 +19,19 @@ def mostrarMenu():
         print("SISTEMA DE URGENCIAS HOSPITALARIAS")
         print("-"*50)
         print("1. Ejecutar ETL histórico")
+        print("2. Triaje")
         print("0. Salir")
         opcion = input("Selecciona una opción: ").strip()
         if opcion == "1":
             try:
-                ejecutar_etl_historico
+                ejecutar_etl_historico()
             except Exception as error:
                 print(f"Error durante la ejecución del ETL: {error}")
+        elif opcion=="2":
+            try:
+                iniciarworker()
+            except Exception as error:
+                print(f"Error durante la ejecución del worker: {error}")
         elif opcion == "0":
             print("Saliendo")
             break

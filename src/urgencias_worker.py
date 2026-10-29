@@ -1,6 +1,6 @@
 import time
 import requests
-from triage_redis import verificar_conexion, encolar_paciente, asignar_boxes
+from triage_redis import verificar_conexion, encolar_paciente
 
 API_URL = "http://10.201.59.248:28000/api/v1/urgencias/novedades"
 
