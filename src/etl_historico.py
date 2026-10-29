@@ -3,6 +3,7 @@ esto es para la limpieza del historico de urgencias csv
 el resultado de ``limpiar_datos`` está preparado para insertarse como
 documentos en MongoDB
 """
+# comando de docker para iniciarlo (desde la raiz del proyecto): docker compose --env-file docker/.env -f docker/docker-compose.yml up -d --build
 
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+import analytics_mongo as mongo
 
 
 VALORES_NULOS = {
@@ -132,3 +134,6 @@ if __name__ == "__main__":
         raiz / "data" / "partes_clinicos.json",
     )
     print(f"Episodios listos para MongoDB: {len(documentos)}")
+    mongo.cargar_en_mongo(documentos)
+    print("Carga en MongoDB completada")
+    
