@@ -5,5 +5,5 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src ./src
-COPY data ./dataC
-CMD ["python", "src/etl_historico.py"]
+COPY data ./data
+CMD ["python", "src/main.py"]

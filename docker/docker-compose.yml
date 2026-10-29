@@ -38,6 +38,8 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     container_name: python
+    stdin_open: true
+    tty: true
     depends_on:
       mongo:
         condition: service_healthy
