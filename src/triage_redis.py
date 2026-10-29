@@ -29,12 +29,12 @@ def verificar_conexion():
 
 def encolar_paciente(paciente):
     id_episodio = paciente["id_episodio"]
-    llegada = paciente["datos_adminsion"]["timestamp_llegada"]
+    llegada = paciente["datos_admision"]["timestamp_llegada"]
     espera_min = paciente["datos_triaje"]["tiempo_max_espera_min"]
 
     score = llegada + (espera_min * 60)
 
-    redis_client.set (f"paciente: {id_episodio}", json.dumps(paciente))
+    redis_client.set(f"paciente:{id_episodio}", json.dumps(paciente))
 
     redis_client.zadd("cola_pacientes", {id_episodio: score})
     print(f"  [REDIS] Paciente {id_episodio} encolado con score {score}.")
@@ -66,9 +66,3 @@ def encolar_paciente(paciente):
 
 if __name__ == "__main__":
     verificar_conexion()
-
-
-
-
-
-
