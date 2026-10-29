@@ -1,3 +1,6 @@
+#Archivo para el diagnóstico y limpieza de datos, no se utiliza porque
+#el archivo etl_historico.py ya realiza esta tarea
+
 from pathlib import Path
 import pandas as pd
 
@@ -28,6 +31,7 @@ df_adm_sin_duplicados = df_adm.drop_duplicates()
 print("Filas antes:", len(df_adm))
 print("Filas después:", len(df_adm_sin_duplicados))
 
+#Comparar que ids aparecen sólo en uno de los dos archivos
 ids_csv = set(df_adm_sin_duplicados["id_episodio"])
 ids_json = set(df_partes["id_episodio"])
 

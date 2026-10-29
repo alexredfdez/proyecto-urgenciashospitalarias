@@ -1,2 +1,21 @@
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Archivos de entorno y credenciales
 .env
 docker/.env
+
+# Archivos de datos generados localmente
+data/historico_anonimizado.json
+
+# Caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
