@@ -34,9 +34,15 @@ services:
       start_period: 30s
 
   python:
-    image: python:3.12
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     container_name: python
-    command: ["python", "-c", "import time; print('Python funcionando'); time.sleep(3600)"]
+    stdin_open: true
+    tty: true
+    depends_on:
+      mongo:
+        condition: service_healthy
     networks:
       - shared-network
 

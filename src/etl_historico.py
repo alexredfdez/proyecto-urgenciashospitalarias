@@ -3,6 +3,7 @@ esto es para la limpieza del historico de urgencias csv
 el resultado de ``limpiar_datos`` está preparado para insertarse como
 documentos en MongoDB
 """
+# comando de docker para iniciarlo (desde la raiz del proyecto) (esto es una prueba antes d hacer el main): docker compose --env-file docker/.env -f docker/docker-compose.yml up -d --build
 
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+import analytics_mongo as mongo
 
 
 VALORES_NULOS = {
@@ -125,10 +127,4 @@ def ejecutar_etl(ruta_csv: str | Path, ruta_json: str | Path) -> list[dict[str, 
     return limpiar_datos(admisiones, partes)
 
 
-if __name__ == "__main__":
-    raiz = Path(__file__).resolve().parent.parent
-    documentos = ejecutar_etl(
-        raiz / "data" / "admisiones_historico.csv",
-        raiz / "data" / "partes_clinicos.json",
-    )
-    print(f"Episodios listos para MongoDB: {len(documentos)}")
+    

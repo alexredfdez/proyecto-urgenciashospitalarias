@@ -6,6 +6,7 @@ env/
 # Archivos de entorno y credenciales
 .env
 docker/.env
+docker/mongo_data/
 
 # Archivos de datos generados localmente
 data/historico_anonimizado.json
