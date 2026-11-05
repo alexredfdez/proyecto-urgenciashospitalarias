@@ -39,29 +39,29 @@ def encolar_paciente(paciente):
     redis_client.zadd("cola_pacientes", {id_episodio: score})
     print(f"  [REDIS] Paciente {id_episodio} encolado con score {score}.")
 
-    def asignar_boxes():
-        for i in range(1, 6):
-            box_key = f"box_{i}"
-            estado = redis_client.hget(box_key, "estado")
+def asignar_boxes():
+    for i in range(1, 6):
+        box_key = f"box_{i}"
+        estado = redis_client.hget(box_key, "estado")
 
-            if estado == "libre":
-                paciente_urgente = redis_client.zpopmin(
-                    "urgencias:cola_espera",
-                    count=1
-                )
-                if paciente_urgente:
-                    id_episodio = paciente_urgente[0][0]
-                redis_client.hset(
-                    box_key,
-                    mapping={
-                        "estado": "ocupado",
-                        "id_episodio": id_episodio,
-                        "hora_entrada": time.time()
-                    }
-                )
-                print(f"   [BOX] Paciente {id_episodio} asignado al {box_key}.")
-            else:
-                break
+        if estado == "libre":
+            paciente_urgente = redis_client.zpopmin(
+                "urgencias:cola_espera",
+                count=1
+            )
+            if paciente_urgente:
+                id_episodio = paciente_urgente[0][0]
+            redis_client.hset(
+                box_key,
+                mapping={
+                    "estado": "ocupado",
+                    "id_episodio": id_episodio,
+                    "hora_entrada": time.time()
+                }
+            )
+            print(f"   [BOX] Paciente {id_episodio} asignado al {box_key}.")
+        else:
+            break
 
 
 if __name__ == "__main__":
