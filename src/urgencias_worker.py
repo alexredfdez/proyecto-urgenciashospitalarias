@@ -1,14 +1,18 @@
 import time
 import requests
-from triage_redis import verificar_conexion, encolar_paciente, asignar_boxes
+from pymongo import MongoClient
+from triage_redis import verificar_conexion, encolar_paciente, asignar_boxes, procesar_alta_redis
 
 API_URL = "http://10.201.59.248:28000/api/v1/urgencias/novedades"
 
+# CONEXIÓN A MONGODB
+mongo_client = MongoClient("mongodb://localhost:27017/")
+db_hospital = mongo_client["urgencias"]
+coleccion_urgencias = db_hospital["episodios_urgencias"]
+
 def main():
     print("Iniciando worker de urgencias...")
-    
     verificar_conexion()
-    
     print(f"Escuchando novedades en {API_URL}...")
     print("-" * 40)
 
@@ -30,7 +34,6 @@ def main():
                             sip = paciente["datos_admision"]["sip_paciente"]
                             nivel = paciente["datos_triaje"]["nivel_manchester"]
                             print(f" -> Nuevo ingreso: SIP {sip} | Nivel: {nivel}")
-                            
                             encolar_paciente(paciente)
 
                     if altas > 0:
@@ -38,6 +41,14 @@ def main():
                             id_ep = alta["id_episodio"]
                             destino = alta["destino_alta"]
                             print(f" <- ALTA: Episodio {id_ep} | Destino: {destino}")
+                            
+                            datos_completos = procesar_alta_redis(id_ep)
+                            
+                            if datos_completos:
+                                datos_completos.update(alta)
+                                
+                                coleccion_urgencias.insert_one(datos_completos)
+                                print(f"   [MONGO] Episodio {id_ep} consolidado definitivamente en BD.")
                     
                     asignar_boxes()
 
